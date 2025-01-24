@@ -16,12 +16,13 @@ export class CustomExceptionFilter implements ExceptionFilter {
 
     if (exception.stack) {
       const stackLines = exception?.stack?.split('\n');
-      const filename = stackLines[2].split('crm');
-      location = filename[1];
+      for (const line of stackLines) {
+        if (line.includes('\\src\\')) {
+          location = `src${line.split('src')[1]}`;
 
-      const d = exception?.stack?.split('at ');
-      const e = d[0].split(filename[1]);
-      errorDetails = e[1];
+          break;
+        }
+      }
     }
 
     const errorResponse = {
