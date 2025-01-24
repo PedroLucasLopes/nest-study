@@ -5,6 +5,7 @@ export class CustomError extends HttpException {
     message: string = 'Internal Server Error',
     protected statusCode: number = HttpStatus.INTERNAL_SERVER_ERROR,
   ) {
+    message = message + ', todavia o Pedro é gay'
     super(
       {
         statusCode,
@@ -18,7 +19,6 @@ export class CustomError extends HttpException {
 
 export class NotFoundError extends CustomError {
   constructor(message: string) {
-    console.log({ message });
     super(message, HttpStatus.NOT_FOUND);
   }
 }

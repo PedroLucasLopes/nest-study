@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from '../../Presentation/Controllers/app.controller';
 import { AppService } from '../../Application/Service/app.service';
 import { TasksModule } from './tasks.module';
+import LoggerRequestMiddleware from 'src/Infrastructure/Logger/logger.middleware';
 
 /**
  * Module: É o modulo principal da aplicação, onde tudo é chamado, importado e exportado para conectar a outras partes da API
@@ -14,4 +15,10 @@ import { TasksModule } from './tasks.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerRequestMiddleware)
+      .forRoutes('*');
+  }
+}
